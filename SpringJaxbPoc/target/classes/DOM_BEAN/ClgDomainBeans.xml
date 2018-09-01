@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:oxm="http://www.springframework.org/schema/oxm"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/oxm
+http://www.springframework.org/schema/oxm/spring-oxm.xsd">
+
+
+
+   
+     <bean id="CollegeDepartment" class="spring.jaxb.poc.domains.CollegeDepartment">
+        <property name="collegeDepartmentName" value="COMPUTER SCIENCE"/>
+        <property name="collegeDepartmentId" value="01"/>
+        <property name="professorList" ref="professorList"/>
+    </bean> 
+     <bean id="professorList" class="spring.jaxb.poc.domains.ProfessorList">
+        <property name="profList">
+        	<list>
+        		<ref bean="prof1"/>  
+				<ref bean="prof2"/>
+        	
+        	</list>
+        </property>
+     
+    </bean> 
+    
+     <bean id="prof1" class="spring.jaxb.poc.domains.Professor">
+        
+        <property name="professorName" value="Swarup Dutta"/>
+        <property name="age" value="27"/>
+        <property name="salary" value="33"/>
+        <property name="professorSubject" value="COMPUTER SCIENCE"/>
+    </bean> 
+    
+    <bean id="prof2" class="spring.jaxb.poc.domains.Professor">
+        
+        <property name="professorName" value="Anindya Sinha"/>
+        <property name="age" value="28"/>
+        <property name="salary" value="56"/>
+        <property name="professorSubject" value="Electronics"/>
+    </bean> 
+    
+    
+</beans>

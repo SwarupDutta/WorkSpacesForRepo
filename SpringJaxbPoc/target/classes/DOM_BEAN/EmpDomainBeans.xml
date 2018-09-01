@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:oxm="http://www.springframework.org/schema/oxm"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/oxm
+http://www.springframework.org/schema/oxm/spring-oxm.xsd">
+
+
+
+   
+     <bean id="EmployeeDepartment" class="spring.jaxb.poc.domains.EmployeeDepartment">
+        <property name="deptName" value="IT"/>
+        <property name="departmentId" value="01"/>
+        <property name="empList" ref="empList"/>
+    </bean> 
+     <bean id="empList" class="spring.jaxb.poc.domains.EmployeeList">
+        <property name="empList">
+        	<list>
+        		<ref bean="emp1"/>  
+				<ref bean="emp2"/>
+        	
+        	</list>
+        </property>
+     
+    </bean> 
+    
+     <bean id="emp1" class="spring.jaxb.poc.domains.Employee">
+        
+        <property name="name" value="Swarup Dutta"/>
+        <property name="age" value="27"/>
+        <property name="salary" value="33"/>
+    </bean> 
+    
+    <bean id="emp2" class="spring.jaxb.poc.domains.Employee">
+        
+        <property name="name" value="Anindya Sinha"/>
+        <property name="age" value="28"/>
+        <property name="salary" value="56"/>
+    </bean> 
+    
+    
+</beans>

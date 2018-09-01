@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:oxm="http://www.springframework.org/schema/oxm"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/oxm
+http://www.springframework.org/schema/oxm/spring-oxm.xsd">
+
+
+   <import resource="${DOMAIN_BEANS}/ClgDomainBeans.xml"/>
+   <import resource="${DOMAIN_BEANS}/EmpDomainBeans.xml"/>
+    <import resource="${JAXB_BEANS}/MarshallerBeans.xml"/>
+  
+    
+     <bean id="marshallerunmarshaller" class="spring.jaxb.poc.marshallerunmarshaller.CustomeMarshallerUnMarshaller">
+        <property name="oJaxb2Marshaller" ref="springMarshallerUnMarshaller"/>
+     </bean> 
+</beans>
