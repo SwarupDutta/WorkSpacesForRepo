@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="customJexlEngine" class="spring.jexl.poc.jexlengine.CustomJexlEngine">
+
+		<property name="jexlEngine" ref="jexlEngine" />
+		<property name="scriptFile" ref="scriptFile" />
+		<property name="jexlContextMap">
+
+
+			<map>
+				<entry key="ObjectOne" value-ref="ObjectOne"></entry>
+				<entry key="ObjectTwo" value-ref="ObjectTwo"></entry>
+			</map>
+		</property>
+
+
+
+	</bean>
+	<bean id="jexlEngine" class="org.apache.commons.jexl2.JexlEngine" >
+	
+	<property name="silent" value="false"/>
+		<property name="debug" value="false"/>
+	
+	</bean>
+
+	<bean id="scriptFile" class="java.io.File">
+		<constructor-arg value="../SpringJexlPoc/script/testScript.script"
+			type="java.lang.String"></constructor-arg>
+
+	</bean>
+	<bean id="jexlContextMap" class="org.apache.commons.jexl2.JexlEngine" />
+	<bean id="ObjectOne" class="spring.jexl.poc.params.ParamClass">
+	
+		<property name="n" value="10"/>
+	</bean>
+
+<bean id="ObjectTwo" class="spring.jexl.poc.params.ParamClass">
+	
+		<property name="n" value="20"/>
+	</bean>
+
+</beans>

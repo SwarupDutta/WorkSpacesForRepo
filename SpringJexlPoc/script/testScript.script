@@ -1,0 +1,21 @@
+if(ObjectOne!=null && ObjectTwo!=null)
+	X1=ObjectOne.getN()*ObjectTwo.getN();
+else
+	x1=-1;
+
+
+if(listOfObjects!=null)
+{
+	 sum=0
+	/*foreach (item in listOfObjects)
+	{
+		
+		sum=sum+item.getN();
+	}*/
+	for (item : listOfObjects)
+	{
+		
+		sum=sum+item.getN();
+	}
+	
+}
