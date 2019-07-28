@@ -1,0 +1,37 @@
+package com.sample
+import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+import poc.drool.models.Message;
+//
+
+function boolean testMethod(HashMap map)
+{
+	List<Message> messageList=(List<Message> )map.get("all");
+	List<Message> goodByeMessageList=new ArrayList<Message>();
+	List<Message> helloMessageList=new ArrayList<Message>();
+	
+	for(Message oMessage:messageList)
+	{
+		if(oMessage.getStatus()==1)
+		{
+		goodByeMessageList.add(oMessage);
+		}
+		else
+		{
+		helloMessageList.add(oMessage);
+		}
+	}
+	map.put("goodByeList",goodByeMessageList);
+	map.put("helloList",helloMessageList);
+	
+	return true;
+}
+rule "marital status" 
+	dialect "mvel" 
+	agenda-group "discount" 
+	when map:HashMap()
+		eval(testMethod(map))
+	then 
+		//System.out.println("Function returned");
+end 

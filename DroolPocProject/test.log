@@ -1,0 +1,53 @@
+<object-stream>
+<org.drools.audit.event.ActivationLogEvent>
+  <type>4</type>
+  <activationId>Apply more than 3 years seniority discount [1]</activationId>
+  <rule>Apply more than 3 years seniority discount</rule>
+  <declarations>$c=null 0.0(1)</declarations>
+</org.drools.audit.event.ActivationLogEvent>
+<org.drools.audit.event.ActivationLogEvent>
+  <type>4</type>
+  <activationId>Apply more than 5 years seniority discount [1]</activationId>
+  <rule>Apply more than 5 years seniority discount</rule>
+  <declarations>$c=null 0.0(1)</declarations>
+</org.drools.audit.event.ActivationLogEvent>
+<org.drools.audit.event.ObjectLogEvent>
+  <type>1</type>
+  <factId>1</factId>
+  <objectToString>null 0.0</objectToString>
+</org.drools.audit.event.ObjectLogEvent>
+<org.drools.audit.event.ActivationLogEvent>
+  <type>6</type>
+  <activationId>Apply more than 5 years seniority discount [1]</activationId>
+  <rule>Apply more than 5 years seniority discount</rule>
+  <declarations>$c=null 0.0(1)</declarations>
+</org.drools.audit.event.ActivationLogEvent>
+<org.drools.audit.event.ObjectLogEvent>
+  <type>2</type>
+  <factId>1</factId>
+  <objectToString>Seniority grater than 5 years 0.3</objectToString>
+</org.drools.audit.event.ObjectLogEvent>
+<org.drools.audit.event.ActivationLogEvent>
+  <type>7</type>
+  <activationId>Apply more than 5 years seniority discount [1]</activationId>
+  <rule>Apply more than 5 years seniority discount</rule>
+  <declarations>$c=Seniority grater than 5 years 0.3(1)</declarations>
+</org.drools.audit.event.ActivationLogEvent>
+<org.drools.audit.event.ActivationLogEvent>
+  <type>6</type>
+  <activationId>Apply more than 3 years seniority discount [1]</activationId>
+  <rule>Apply more than 3 years seniority discount</rule>
+  <declarations>$c=Seniority grater than 5 years 0.3(1)</declarations>
+</org.drools.audit.event.ActivationLogEvent>
+<org.drools.audit.event.ObjectLogEvent>
+  <type>2</type>
+  <factId>1</factId>
+  <objectToString>Seniority grater than 3 years 0.4</objectToString>
+</org.drools.audit.event.ObjectLogEvent>
+<org.drools.audit.event.ActivationLogEvent>
+  <type>7</type>
+  <activationId>Apply more than 3 years seniority discount [1]</activationId>
+  <rule>Apply more than 3 years seniority discount</rule>
+  <declarations>$c=Seniority grater than 3 years 0.4(1)</declarations>
+</org.drools.audit.event.ActivationLogEvent>
+</object-stream>

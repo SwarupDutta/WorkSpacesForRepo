@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<catalog >
+
+	<chain name="sell-vehicle">
+		<command id="ExceptionHandler"
+			className="poc.apache.chain.filters.SellVehicleExceptionHandler" />
+		<command id="GetCustomerInfo" className="poc.apache.chain.commands.GetCustomerInfo" />
+		<command id="TestDriveVehicle" className="poc.apache.chain.commands.TestDriveVehicle" />
+
+		<command id="NegotiateSale" className="poc.apache.chain.commands.NegotiateSale" />
+
+		<command className="org.apache.commons.chain.generic.LookupCommand"
+
+			name="arrange-financing" optional="true" />
+		<!-- <command id="ArrangeFinancing" className="poc.apache.chain.commands.ArrangeFinancing"/> -->
+
+
+		<command id="CloseSale" className="poc.apache.chain.commands.CloseSale" />
+	</chain>
+
+
+	<chain name="arrange-financing">
+
+
+		<command id="ArrangeFinancing" className="poc.apache.chain.commands.ArrangeFinancing" />
+	</chain>
+</catalog>

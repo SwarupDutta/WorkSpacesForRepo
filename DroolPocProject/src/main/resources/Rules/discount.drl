@@ -1,0 +1,44 @@
+package com.sample
+import poc.drool.models.Customer;
+import function poc.util.Utility.helper;
+rule "Apply more than 3 years seniority discount" //Case5.java
+lock-on-active true
+//no-loop true
+when
+    $c: Customer(seniority > 3) 
+then
+      helper(drools);
+
+    modify($c){
+       
+        setDiscount($c.getDiscount()+0.1),
+        setDiscountReason("Seniority grater than 3 years")
+    }
+end
+
+rule "Apply more than 5 years seniority discount" 
+lock-on-active true
+when
+    $c: Customer(seniority > 5)
+then
+      helper(drools);
+
+    modify($c){
+     
+        setDiscount($c.getDiscount()+0.3),
+        setDiscountReason("Seniority grater than 5 years")
+    }
+end
+
+rule "No Customer has a discount grater than 25" //Case8.java
+lock-on-active true
+when
+
+    $c: Customer(discount > 0.25)
+then
+      helper(drools);
+
+    modify($c){
+        setDiscount(0.25);
+    }
+end

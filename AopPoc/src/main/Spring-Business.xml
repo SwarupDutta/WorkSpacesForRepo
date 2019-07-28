@@ -1,0 +1,63 @@
+<!-- <?xml version="1.0" encoding="UTF-8"?> <beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd"> -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd   
+    http://www.springframework.org/schema/aop   
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd ">
+	<aop:aspectj-autoproxy />
+
+	<bean id="businessService" class="com.poc.spring.services.BusinessServiceImpl" />
+	<!-- Advice -->
+		<bean id="businessAdvice" class="com.poc.spring.advices.BusinessAdvice" />
+	
+	<bean id="testAdvice" class="com.poc.spring.advices.TestAdvice" />
+
+
+
+
+	
+
+	
+	<bean id="testAdvisor"
+		class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+		<!-- <property name="mappedName" value="doSomeThing" /> -->
+		<property name="mappedNames">
+			<list>
+				<value>doSomeThing</value>
+				<!-- <value>method2</value> <value>method3</value> -->
+			</list>
+		</property>
+		<property name="advice" ref="testAdvice" />
+		<property name="classFilter" ref="customClassFilter" />
+
+	</bean>
+	
+	<bean id="businessAdvisor"
+		class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+		<!-- <property name="mappedName" value="doSomeThing" /> -->
+		<property name="mappedNames">
+			<list>
+				<value>doSomeThing</value>
+				<value>doBajeThing</value>
+
+				<!-- <value>method2</value> <value>method3</value> -->
+			</list>
+		</property>
+		<property name="advice" ref="businessAdvice" />
+	</bean>
+
+
+
+
+	<bean id="customClassFilter" class="com.poc.spring.filters.CustomClassFilter" />
+
+	<!-- <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" 
+		/> -->
+	<!-- <bean id="businessServiceProxy" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator"> 
+		<property name="beanNames"> <list> <value>*Service</value> </list> </property> 
+		<property name="interceptorNames"> <list> <value>businessAdvisor</value> 
+		<value>testAdvisor</value> </list> </property> </bean> -->
+</beans>
