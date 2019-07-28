@@ -1,0 +1,211 @@
+http://middlewareadmin-pavan.blogspot.in/2012/10/java-weblogicdeployer-command-line_24.html
+http://middlewareprimer.blogspot.in/2013/03/unlocking-weblogic-user-account.html
+
+java weblogic.Admin -username weblogic -password weblogic123 GET -pretty -mbean "MedRec:Name=asapt_domain,Type=Server" -property ListenPort
+
+
+
+java weblogic.Deployer -adminurl t3://10.52.11.35:6001 -username weblogic -password weblogic123 -listtask
+
+
+
+
+java weblogic.Deployer command line utility
+
+Syntax:
+java weblogic.Deployer [options]  [-deploy|-redeploy|-undeploy|-start|-stop|-listapps]    [file(s)]
+Weblogic.Deployer used to perform various deployment tasks
+1.Deploy an application: we can deloy an application by using weblogic.Deployer utility.
+To deploy a new application:
+Java weblogic.Deployer –adminurl t3://localhost:7001 –username system –password weblogic  -name app –source  /myapp/app.ear –targets server1,server2 –deploy
+2.Redeploy an application: weblogic.Deployer allows us to redeploy an entire application or a part of application.
+To redeploy an application:
+Java weblogic.Deployer –adminurl t3://localhost:7001 –username system –password weblogic –name app –redeploy
+To redeploy a part of application:
+Java weblogic.Deployer –adminurl t3://localhost:7001 –username system –password weblogic –targets server1,server2
+ –redeploy jsps/*.jsp
+3.Undeploy an application: Utility allows to undeploy an application.
+To undeploy an application:
+Java weblogic.Deployer –adminurl t3://localhost:7001 –username system –password weblogic –name app –undeploy
+targets –server1,server2
+4.Listing deployment applications and tasks: Deployer utility can list the all deployed applications and tasks.
+To list all deployed applications:
+Java weblogic.Deployer –adminurl t3://localhost:7001 –username system –password weblogic –listapps
+To list all deployment tasks:
+Java weblogic.Deployer –adminurl t3://localhost:7001 –username system –password weblogic –listtask
+4.cancel a deployment task: You can cancel a deployment task using Deployer utility.
+To cancel a deployment task:
+Java weblogic.Deployer –adminurl t3://localhost:7001 –username system –password weblogic –cancel id tag
+Examples:
+1.Deploy an application:
+
+java weblogic.Deployer -adminurl t3://localhost:7001 -username weblogic -password weblogic1 -name benefits -source c:\student\course\labs\Lab08\exercise\applications\benefits.war -targets ms1,ms2,ms3 -deploy
+
+
+Output:
+
+
+weblogic.Deployer invoked with options:  -adminurl t3://localhost:7001 -username weblogic -name benefits -source c:\student\course\labs\Lab08\exercise\applications\benefits.war -targets ms1,ms2,ms3 -deploy
+<Oct 25, 2012 11:04:22 AM IST> <Info> <J2EE Deployment SPI> <BEA-260121> <Initiating deploy operation for application, benefits [archive: c:\student\course\labs
+\Lab08\exercise\applications\benefits.war] , to ms1 ms2 ms3 .>
+
+
+Task 6 initiated: [Deployer:149026]deploy application benefits on ms1,ms3,ms2.
+Task 6 completed: [Deployer:149026]deploy application benefits on ms1,ms3,ms2.
+Target state: deploy completed on Server ms1
+Target state: deploy completed on Server ms3
+Target state: deploy completed on Server ms2
+
+2.Redeploy an application:
+
+java weblogic.Deployer -adminurl t3://localhost:7001 -username weblogic -password weblogic1 -name benefits -redeploy
+
+Output:
+
+weblogic.Deployer invoked with options:  -adminurl t3://localhost:7001 -username weblogic -name benefits -redeploy
+<Oct 25, 2012 11:21:57 AM IST> <Info> <J2EE Deployment SPI> <BEA-260121> <Initiating redeploy operation for application, benefits [archive: null], to configured targets.>
+
+
+Task 9 initiated: [Deployer:149026]redeploy application benefits on ms1,ms3,ms2.
+Task 9 completed: [Deployer:149026]redeploy application benefits on ms1,ms3,ms2.
+Target state: redeploy completed on Server ms1
+Target state: redeploy completed on Server ms3
+Target state: redeploy completed on Server ms2
+
+3.Undeploy an application:
+
+java weblogic.Deployer -adminurl t3://localhost:7001 -username weblogic -password weblogic1 -name benefits -undeploy
+
+
+Output:
+weblogic.Deployer invoked with options:  -adminurl t3://localhost:7001 -username weblogic -name benefits -undeploy
+<Oct 25, 2012 11:14:54 AM IST> <Info> <J2EE Deployment SPI> <BEA-260121> <Initiating undeploy operation for application, benefits [archive: null], to configured targets.>
+Task 7 initiated: [Deployer:149026]remove application benefits on ms1,ms3,ms2.
+Task 7 completed: [Deployer:149026]remove application benefits on ms1,ms3,ms2.
+Target state: undeploy completed on Server ms1
+Target state: undeploy completed on Server ms3
+Target state: undeploy completed on Server ms2
+
+4. Listing deployment applications:
+
+java weblogic.Deployer -adminurl t3://localhost:7001 -username weblogic -password weblogic1 -listapps
+
+
+Output:
+
+weblogic.Deployer invoked with options:  -adminurl t3://localhost:7001 -username weblogic -listapps
+
+benefits
+Number of Applications Found : 1
+
+5. Listing deployment tasks:
+java weblogic.Deployer -adminurl t3://localhost:7001 -username weblogic -password weblogic1 -listtask
+
+Output:
+weblogic.Deployer invoked with options:  -adminurl t3://localhost:7001 -username weblogic -listtask
+
+
+Task 1 completed: [Deployer:149026]stop application benefits on cl1.
+Target state: listtask completed on Cluster cl1
+Task 2 completed: [Deployer:149026]start application benefits on cl1.
+Target state: listtask completed on Cluster cl1
+Task 3 completed: [Deployer:149026]stop application benefits on cl1.
+Target state: listtask completed on Cluster cl1
+Task 5 failed: [Deployer:149026]deploy application benefits on ms1,ms3,ms2.
+Target state: listtask failed on Server ms1
+weblogic.management.DeploymentException: [Deployer:149258]Server failed to remove the staged files 'C:\bea\user_projects\domains\wlg_domain\servers\ms1\stage\benefits\benefits.war' for application 'benefits' completely. Check the directory and make sure no other application using this directory. This will result in inappropriate results when this server gets partitioned and trying to deploy this application.
+
+
+Target state: listtask failed on Server ms3
+weblogic.management.DeploymentException: [Deployer:149258]Server failed to remove the staged files 'C:\bea\user_projects\domains\wlg_domain\servers\ms3\stage\benefits\benefits.war' for application 'benefits' completely. Check the directory and make sure no other application using this directory. This will result in inappropriate results when this server gets partitioned and trying to deploy this application.
+Target state: listtask failed on Server ms2
+weblogic.management.DeploymentException: [Deployer:149258]Server failed to remove the staged files 'C:\bea\user_projects\domains\wlg_domain\servers\ms2\stage\benefits\benefits.war' for application 'benefits' completely. Check the directory and make sure no other application using this directory. This will result in inappropriate results when this server gets partitioned and trying to deploy this application.
+Task 6 completed: [Deployer:149026]deploy application benefits on ms1,ms3,ms2.
+Target state: listtask completed on Server ms1
+Target state: listtask completed on Server ms3
+Target state: listtask completed on Server ms2
+Task 7 completed: [Deployer:149026]remove application benefits on ms1,ms3,ms2.
+Target state: listtask completed on Server ms1
+Target state: listtask completed on Server ms3
+Target state: listtask completed on Server ms2
+Task 8 completed: [Deployer:149026]deploy application benefits on ms1,ms3,ms2.
+Target state: listtask completed on Server ms1
+Target state: listtask completed on Server ms3
+Target state: listtask completed on Server ms2
+Task 9 completed: [Deployer:149026]redeploy application benefits on ms1,ms3,ms2.
+Target state: listtask completed on Server ms1
+Target state: listtask completed on Server ms3
+Target state: listtask completed on Server ms2
+
+
+Errors:
+
+Java weblogic.Deployer -adminurl t3://localhost:7001 -username weblogic -password weblogic1 -name benefits -source C:\student\course\labs\Lab08\exercise\applications\benefits.war -targets ms1,ms2,ms3 -deploy
+
+Exception in thread "main" java.lang.NoClassDefFoundError: weblogic/Deployer
+SOL:
+
+Set the class path.
+
+C:\bea\user_projects\domains\wlg_domain\bin>setDomainEnv.cmd
+
+
+Error:
+
+
+java weblogic.Deployer -adminurl t3://localhost:7001 -username weblogic -password weblogic1 -name benefits -source  C:\student\course\labs\Lab08\exercise\applications\benefits.war -targets ms1,ms2,ms3 -deploy
+
+
+weblogic.Deployer invoked with options:  -adminurl t3://localhost:7001 -username
+ weblogic ûpassword weblogic1 -name benefits ûsource C:\student\course\labs\Lab0
+8\exercise\applications\benefits.war -targets ms1,ms2,ms3 -deploy
+No source specified for operation
+Sol: 
+
+Check the source parameter and correct it.
+
+Error:
+
+
+java weblogic.Deployer -adminurl t3://localhost:7001 -username weblogic -password weblogic1 -name benefits -source c:\student\course\labs\Lab08\exercises\applications\benefits.war -targets ms1,ms2,ms3 -deploy
+
+
+weblogic.Deployer invoked with options:  -adminurl t3://localhost:7001 -username
+ weblogic -name benefits -source c:\student\course\labs\Lab08\exercises\applicat
+ions\benefits.war -targets ms1,ms2,ms3 -deploy
+The file, 'c:\student\course\labs\Lab08\exercises\applications\benefits.war', does not exist.
+
+
+Sol:
+
+
+Check the source file path and correct it.
+Error:
+java weblogic.Deployer -adminurl t3://localhost:7001 -username weblogic -password weblogic1 -name benefits -source c:\student\course\labs\Lab08\exercise\applications\benefits.war -targets ms1,ms2,ms3 -deploy
+
+
+weblogic.Deployer invoked with options:  -adminurl t3://localhost:7001 -username
+ weblogic -name benefits -source c:\student\course\labs\Lab08\exercise\applicati
+ons\benefits.war -targets ms1,ms2,ms3 -deploy
+<Oct 25, 2012 10:58:39 AM IST> <Info> <J2EE Deployment SPI> <BEA-260121> <Initia
+ting deploy operation for application, benefits [archive: c:\student\course\labs
+\Lab08\exercise\applications\benefits.war], to ms1 ms3 ms2 .>
+Task 5 initiated: [Deployer:149026]deploy application benefits on ms1,ms3,ms2.
+Task 5 failed: [Deployer:149026]deploy application benefits on ms1,ms3,ms2.
+Target state: deploy failed on Server ms1
+weblogic.management.DeploymentException: [Deployer:149258]Server failed to remove the staged files 'C:\bea\user_projects\domains\wlg_domain\servers\ms1\stage\benefits\benefits.war' for application 'benefits' completely. Check the directory and make sure no other application using this directory. This will result in inappropriate results when this server gets partitioned and trying to deploy this application.
+Target state: deploy failed on Server ms3
+weblogic.management.DeploymentException: [Deployer:149258]Server failed to remove the staged files 'C:\bea\user_projects\domains\wlg_domain\servers\ms3\stage\benefits\benefits.war' for application 'benefits' completely. Check the directorand make sure no other application using this directory. This will result in inappropriate results when this server gets partitioned and trying to deploy this application.
+Target state: deploy failed on Server ms2
+weblogic.management.DeploymentException: [Deployer:149258]Server failed to remov
+e the staged files 'C:\bea\user_projects\domains\wlg_domain\servers\ms2\stage\be
+nefits\benefits.war' for application 'benefits' completely. Check the directory
+and make sure no other application using this directory. This will result in ina
+ppropriate results when this server gets partitioned and trying to deploy this a
+pplication.
+Sol:
+Remove the application from the staging directory and try deploying the application.
+Staging path:
+C:\bea\user_projects\domains\wlg_domain\servers\ms1\stage\benefits\benefits.war'
+C:\bea\user_projects\domains\wlg_domain\servers\ms2\stage\benefits\benefits.war'
+C:\bea\user_projects\domains\wlg_domain\servers\ms3\stage\benefits\benefi

@@ -1,0 +1,311 @@
+WebLogic Server is not getting started-
+Delete following
+
+/app1/Oracle/Middleware/Oracle_Home/user_projects/domains/ipsa_domain/servers/AdminServer/tmp
+AdminServer.lok 
+
+/app1/Oracle/Middleware/Oracle_Home/user_projects/domains/ipsa_domain/servers/AdminServer/data/ldap/ldapfiles
+EmbededLDAP.lok
+
+
+/app1/Oracle/Middleware/Oracle_Home/user_projects/domains/ipsa_domain/servers/AdminServer/data/store/diagnostics
+WLSDIAGNOSTIC000000.DAT
+
+/app1/Oracle/Middleware/Oracle_Home/user_projects/domains/ipsa_domain/servers/AdminServer/data/store/default
+_WLS_ADMINSERVER000000.DAT
+
+/app1/Oracle/Middleware/Oracle_Home/user_projects/domains/ipsa_domain
+edit.lok
+
+
+==============================================================================
+Check whether any weblogic instance is running or not
+
+ps -aef  | grep -i "weblogic"
+kill -9 [pid]
+
+
+
+====================================================================================
+ ls | wc -l                          37
+ipsaadm@pipsaapp1:/pipsaapp1/Oracle/Middleware/Oracle_Home/user_projects/domains/base_domain/bin/Response/Activation/Mobility/2016_12_14$ 
+grep "    <OrderStatus>SUCCESS</OrderStatus>" * | wc -l
+
+
+for i in `ls` ; do
+grep -q “Ericsson” $i && echo $i
+done
+
+====================================================================================
+
+root@pipsadb1:/# chown -R oracle:oinstall /app1  - change ownership of app1 to oracle and group oinstall
+root@pipsadb1:/# chmod -R 777 /app1 - change permission mode
+root@pipsadb1:/#
+
+cat /etc/group
+cat /etc/passwd
+
+Frequently used commands
+
+Max session exceeds
+SELECT s.sid, s.serial#, s.status, p.spid FROM v$session s, v$process p WHERE s.username = 'IPSAADM' AND p.addr(+) = s.paddr
+
+alter system kill session '&sid,&serialid';
+
+DROP tablespace IPServiceActivatorDb  including CONTENTS and DATAFILES
+
+DROP USER ipsaadm CASCADE
+
+create tablespace IPServiceActivatorDb  datafile '+DATA1' size 20G;
+create user ipsaadm profile "DEFAULT" identified by ipsaadm default tablespace IPServiceActivatorDb temporary tablespace temp account unlock;
+grant unlimited tablespace to ipsaadm; 
+grant connect to ipsaadm; 
+grant resource to ipsaadm;
+grant create view to ipsaadm;
+create directory ipsa_plsql_dir as '/app1/IPSADBPRD/ipsa';
+grant read,write on directory ipsa_plsql_dir to ipsaadm;
+grant execute on sys.utl_file to public;
+grant create procedure to ipsaadm;
+grant create trigger to ipsaadm; 
+grant create table to ipsaadm;
+grant create type to ipsaadm;
+grant create sequence to ipsaadm;
+
+=======================================================================================
+https://oracle-base.com/articles/10g/oracle-data-pump-10g
+
+
+Existing directories can be queried using the ALL_DIRECTORIES view.
+select value from v$spparameter where name = 'utl_file_dir';
+select directory_name,directory_path from all_directories;
+alter system set utl_file_dir='/app1/OracleCommunications/ServiceActivator/modules' scope=spfile; 
+shutdown immediate
+startup
+
+
+Login as sysdba
+CREATE OR REPLACE DIRECTORY TEST_DIR AS '/u01/app/oracle/oradata/TEST_DIR';[mkdir /u01/app/oracle/oradata/TEST_DIR]
+GRANT READ, WRITE ON DIRECTORY TEST_DIR TO ipsaadm;
+
+
+Table Exports/Imports
+From Solris promppt
+expdp ipsaadm/ipsaadm@PIPSADB1 tables=EMP,DEPT directory=TEST_DIR dumpfile=EMP_DEPT.dmp logfile=expdpEMP_DEPT.log
+
+impdp ipsaadm/ipsaadm@PIPSADB1 tables='"""SptSystemUser"""' directory=TEST_DIR  dumpfile=SptSystemUser.dmp logfile=impdpSpySystemUser.log
+
+expdp ipsaadm/ipsaadm@PIPSADB1 tables='"""SptSystemUser"""' directory=TEST_DIR  dumpfile=SptSystemUser.dmp logfile=impdpSpySystemUser.log
+
+Schema Exports/Imports
+
+expdp ipsaadm/ipsaadm@PIPSADB1 schemas=IPSAADM directory=TEST_DIR dumpfile=IPSAADM.dmp logfile=expdpIPSAADM.log
+
+[desc dba_users, select username from dba_users ,drop user ipsaadm cascade]
+impdp ipsaadm/ipsaadm@TIPSADB1 schemas=IPSAADM directory=TEST_DIR dumpfile=IPSAADM.dmp logfile=impdpIPSAADM.log
+
+Database Exports/Imports
+expdp system/password@db10g full=Y directory=TEST_DIR dumpfile=DB10G.dmp logfile=expdpDB10G.log
+
+impdp system/password@db10g full=Y directory=TEST_DIR dumpfile=DB10G.dmp logfile=impdpDB10G.log
+
+
+How to find lock tables[To be tested]
+
+SELECT B.Owner, B.Object_Name, A.Oracle_Username, A.OS_User_Name  FROM V$Locked_Object A, All_Objects B WHERE A.Object_ID = B.Object_ID
+
+
+Unlocking locked tables
+
+http://dwhlaureate.blogspot.in/2014/07/how-to-unlock-locked-table-in-oracle.html
+
+
+Let’s assume that 'EMP' table is locked,
+
+SELECT object_id FROM dba_objects WHERE object_name='EMP';
+ OBJECT_ID
+----------
+7401242
+SELECT sid FROM v$lock WHERE id1=7401242
+SID
+----------
+3434
+SELECT sid, serial# from v$session where sid=3434
+
+       SID    SERIAL#
+
+---------- ----------
+
+      3434      92193
+ALTER SYSTEM KILL SESSION '3434,92193' ;
+
+To run weblogic admin server in prod mode without giving password multiple times
+
+In a Terminal window, navigate to the domain directory.That is /app1/Oracle/Middleware/Oracle_home/user_projects/domains/base_domain. Then cd into the servers/AdminServer subdirectory.
+
+Note: If your administration server has a different name, cd into that directory under servers.
+
+Create a subdirectory there called security and cd into it:
+
+$ mkdir security 
+$ cd security
+vi boot.properties
+
+In the file, put two lines:
+
+username=weblogic 
+password=weblogic123
+(http://www.oracle.com/webfolder/technetwork/tutorials/obe/fmw/wls/12c/15-BootProp--4471/bootproperties.htm)
+
+WebLogic uninstall
+/app1/Oracle/Middleware/Oracle_Home/oui/bin  ./deinstall.sh
+
+ ps -aef  | grep "tns"===Whether Listener is running or not
+lsnrctl status pipsadb1
+
+
+root@pipsaapp1:~# pkg publisher
+PUBLISHER                   TYPE     STATUS P LOCATION
+solaris                     origin   online F http://10.241.49.6:81/
+root@pipsaapp1:~#
+
+
+
+SOLARIS
+
+ 
+ 
+ http://www.datadisk.co.uk/html_docs/sun/solaris_zones_cs.html
+
+
+ http://www.oracle.com/technetwork/server-storage/solaris11/documentation/solaris-11-cheat-sheet-1556378.pdf
+ http://www.oracle.com/technetwork/server-storage/solaris/overview/servicemgmthowto-jsp-135655.html
+ svcs | grep -i network | wc -l - to show running services
+ svcadm enable ipmon
+ svcadm enable ipfilter
+
+
+
+
+Have to login into control domain(10.241.49.9)
+
+ zoneadm list -cv
+ zlogin [zonename]
+ ifconfig -a
+
+ init 6
+ zoneadm -z <zone> reboot]
+ http://www.datadisk.co.uk/html_docs/sun/solaris_zones_cs.html
+
+
+ http://www.oracle.com/technetwork/server-storage/solaris11/documentation/solaris-11-cheat-sheet-1556378.pdf
+ http://www.oracle.com/technetwork/server-storage/solaris/overview/servicemgmthowto-jsp-135655.html
+
+
+To install SUNWsCPU
+
+pkg publisher
+pkg set-publisher -G '*' -g http://10.241.49.131:81/ solaris
+pkg install compatibility/ucb
+
+
+
+
+
+
+
+./ComponentParameters -ComponentName master_server -set Debug.All enabled
+
+
+ComponentParameters -ComponentName master_server -set Debug.All default
+
+
+
+
+
+/app1/OracleCommunications/ServiceActivator/Config/networkProcessor/com/metasolv/serviceactivator/networkprocessor
+
+snoop
+
+
+
+
+
+
+snoop
+snoop -v host 100.127.46.5 and port 161
+or
+snoop -v -o tshoot.pcap -d nxge0 host 100.127.46.5
+
+
+
+
+To install jdk7
+pkg set-publisher -G '*' -g http://10.241.49.131:81/
+pfexec pkg install --accept jdk-7
+
+
+
+
+
+SELECT PRIVILEGE FROM sys.dba_sys_privs WHERE grantee = 'IPSAADM' UNION SELECT PRIVILEGE  FROM dba_role_privs rp JOIN role_sys_privs rsp ON (rp.granted_role = rsp.role) WHERE rp.grantee ='IPSAADM'
+
+
+
+
+
+COLUMN object_name FORMAT A30 SELECT owner, object_type, object_name,status FROM   dba_objects WHERE  status = 'INVALID' ORDER BY owner, object_type, object_name;
+
+
+PRIVILEGE
+----------------------------------------
+CREATE CLUSTER
+CREATE INDEXTYPE
+CREATE OPERATOR
+CREATE PROCEDURE
+CREATE SEQUENCE
+CREATE SESSION
+CREATE TABLE
+CREATE TRIGGER
+CREATE TYPE
+CREATE VIEW
+SET CONTAINER
+
+PRIVILEGE
+----------------------------------------
+UNLIMITED TABLESPACE
+
+12 rows selected.
+
+./ComponentParameters -ComponentName master_integration_manager -set Debug.All enabled
+
+https://docs.oracle.com/cd/B28359_01/server.111/b28320/initparams014.htm
+
+
+
+========================================================================================
+SQL> select spare4 from user$ where name = 'IPSAADM';
+
+SPARE4
+--------------------------------------------------------------------------------
+S:BD6D278E468E69E39CAF37760B5D93D844D59254D8363BDD6037FEEDE271;H:00442EC2CBF6F2C
+7491478642A001D58;T:5052DB5ADAE9EA87A8389CC0DB88A1ADD72895B4281691ED70D9975ED52D
+B02EC905687914CDE1E7EF464C820BF718E75DE98B3825C972228443804F499F50D6866FD72C0E51
+142FD1AA660733E6909F
+
+
+SQL> select password from sys.user$ where name = 'DEV1_IAU';
+
+PASSWORD
+--------------------------------------------------------------------------------
+B58D0319401495D6
+
+SQL> alter user DEV1_IAU IDENTIFIED BY VALUES '767FF0C55C4F1B27';
+
+User altered.
+
+SQL> conn ipsaadm/ipsaadm
+Connected.
+
+
+
+

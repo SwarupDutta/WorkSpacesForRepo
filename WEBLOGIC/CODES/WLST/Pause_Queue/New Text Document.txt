@@ -1,0 +1,7 @@
+server.url=t3://127.0.0.1:8001
+username=weblogic
+password=weblogic
+tragated.server.name=MS-1
+jms.server.name=JMSServer-1
+system.module.name=SystemModule-1
+queue.name=Q-1

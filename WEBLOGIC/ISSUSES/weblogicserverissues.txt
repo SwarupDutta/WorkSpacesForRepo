@@ -1,0 +1,87 @@
+java weblogic.Admin -adminurl localhost:7001 -username admin2 -password password invoke -mbean Security:Name=myrealmUserLockoutManager -method clearLockout admin1
+
+
+java weblogic.Admin -adminurl localhost:7001 -username admin2 -password password invoke -mbean Security:Name=myrealmUserLockoutManager -method clearLockout admin1
+
+
+. ./Enviornment_Profile
+
+/app4/asap/Oracle/Middleware/user_projects/domains/asapt_domain
+
+ java -cp "$CLASSPATH" weblogic.Admin -adminurl t3://10.52.11.35:6001 -username weblogic -password weblogic123 GETSTATE
+Current state of "uatAdminServer" : RUNNING
+
+
+
+http://www.vogella.com/tutorials/REST/article.html
+
+java weblogic.Admin -url localhost:7001 -username admin -password welcome123 UNLOCK
+
+java [ SSL Arguments ] weblogic.Admin 
+     [-url URL]
+     [ User Credentials Arguments ]
+   UNLOCK
+
+
+
+Commands to Check Weblogic Server Status
+
+Admin Server Status
+
+From Domain Home execute the below command
+
+C:\Oracle\Middleware\user_projects\domains\base_domain
+
+Java –cp C:\ Oracle\Middleware\wlserver_10.3\server\lib\weblogic.jar  weblogic.Admin  -adminurl t3:\\localhost:7001 –username weblogic –password –weblogic123 GETSTATE
+
+You will get output as “new_Managed_1”: RUNNING
+
+Managed Server Status
+
+From Domain Home execute the below command
+
+C:\Oracle\Middleware\user_projects\domains\base_domain
+
+Java –cp C:\ Oracle\Middleware\wlserver_10.3\server\lib\weblogic.jar  weblogic.Admin  -adminurl t3:\\localhost:7001 –username weblogic –password –weblogic123 GETSTATE  new_Managed_1
+
+You will get output as “new_Managed_1”: RUNNING
+
+Cluster Status
+
+From Domain Home execute the below command
+
+C:\Oracle\Middleware\user_projects\domains\base_domain
+
+Java utils:MULTICASTTEST  -N clustername –A clusteraddress –p clusterport –T10 –S 2
+
+
+
+Unlocking a Weblogic User Account
+
+Method:1
+1. To unlock a locked user account on a managed server, a user with Admin privileges can use the following command:
+  
+  java weblogic.Admin -url -username adminuser -password passwordforadminuser -type weblogic.management.security.authentication.UserLockoutManager -method clearLockout lockedusername
+
+Method:2
+2. Home >domain_name ->security ->Unlock User
+In Unlock User: provide the user name and save user will be unlocked.
+
+3. How to check whether user is unlocked or not.
+Administration Console: Select Admin server -> Expand the Monitoring-->Security tab for the server.
+This page allows you to monitor user lockout management statistics for this server.
+Total Invalid Logins:       14
+User Lockout Total Count: 1
+Total Login Attempts while Locked:8
+Invalid Logins High: 1
+Locked Users:    0
+Total Users Unlocked:   1
+
+
+$ cd  asapt_domain
+$ echo $CLASSPATH
+/opt/java6/lib/tools.jar:/opt/java6/lib/dt.jar:/app4/asap/asap_base/JLIB/commons-logging-api-1.1.jar:/app4/asap/asap_base/JLIB/commons-logging-1.1.jar:/app4/asap/asap_base/JLIB/terminal-awt-java2.jar:/app4/asap/asap_base/JLIB/xalan.jar:/app4/asap/asap_base/JLIB/xml-apis.jar:/app4/asap/asap_base/JLIB/xschema.jar:/app4/asap/asap_base/JLIB/xmlparserv2.jar:/app4/asap/asap_base/JLIB/jconn2.jar:/app4/asap/asap_base/lib/ojdbc6.jar:/app4/asap/asap_base/lib/weblogic.jar:/app4/asap/asap_base/lib/srp.jar:/app4/asap/asap_base/lib/asaplibcommon.jar:/app4/asap/asap_base/lib/JInterp.jar:/app4/asap/asap_base/lib/sadtClient.jar:/app4/asap/asap_base/lib/SecurityMigration.jar:/app4/asap/asap_base/JLIB/ant/lib/ant.jar:/app4/asap/asap_base/lib/oca_utils.jar:/app4/asap/asap_base/lib/ocac.jar:/app4/asap/asap_base/samples/jsrp/classes:.
+$ java -cp "$CLASSPATH" weblogic.Admin -adminurl t3://10.52.11.35:6001 -username weblogic -password weblogic123 GETSTATE
+Current state of "uatAdminServer" : RUNNING
+
+ ps -elf | grep java | grep weblogic
